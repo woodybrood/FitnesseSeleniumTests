@@ -8,6 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import fitnesse.pages.FitNesseEditorPage;
 import fitnesse.pages.FitNessePage;
+import fitnesse.pages.FitNessePropertiesPage;
 
 public class BasicWikiPageTests extends AbbstractFitNesseTestCase {
 
@@ -24,6 +25,12 @@ public class BasicWikiPageTests extends AbbstractFitNesseTestCase {
 		FitNesseEditorPage editPage = page.edit();
 		page = editPage.clickCancel();
 		assertEquals("Back to FrontPage", "http://localhost:8080/FrontPage", driver.getCurrentUrl());
+	}
+	
+	@Test
+	public void propertiesMenuOptionGoesToPropertiesPage(){
+		FitNessePropertiesPage propertiesPage = page.clickPropertiesLink();
+		assertTrue("On properties page by URL", propertiesPage.isPropertiesPage());
 	}
 	
 	
