@@ -3,6 +3,8 @@ package fitnesse.pages;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -11,7 +13,7 @@ import org.openqa.selenium.support.ui.Select;
 
 public class FitNesseEditorPage  {
 
-	private WebDriver driver;
+	protected WebDriver driver;
 	
 	@FindBy(xpath = "//header/h1/a")
 	private WebElement pageLink;
@@ -25,7 +27,7 @@ public class FitNesseEditorPage  {
 	@FindBy(name = "save")
 	private WebElement saveButton;
 	
-	@FindBy(xpath = "//button[.='Cancel']")
+	@FindBy(xpath = "//button")
 	private WebElement cancelButton;
 	
 	
@@ -48,7 +50,7 @@ public class FitNesseEditorPage  {
 	private WebElement plainTextRadio;
 	
 	public FitNesseEditorPage(WebDriver driver) {
-		// TODO Auto-generated constructor stub
+		this.driver = driver;
 	}
 	
 	public void setHelpText(String text){
@@ -60,6 +62,7 @@ public class FitNesseEditorPage  {
 	}
 	
 	public void setPageContent(String newContent){
+		pageContent.clear();
 		pageContent.sendKeys(newContent);
 	}
 	
@@ -115,6 +118,20 @@ public class FitNesseEditorPage  {
 		}
 		return found;
 
+	}
+
+	public void addPageContent(String string) {
+		
+		 ((JavascriptExecutor) driver).executeScript("positionScript = function(el){if (typeof el.selectionStart == \"number\") {" +
+        "el.selectionStart = el.selectionEnd = el.value.length;" +
+    	"} else if (typeof el.createTextRange != \"undefined\") {"+
+        "el.focus();" +
+        "var range = el.createTextRange();" +
+        " range.collapse(false);" +
+        "range.select();}}; return positionScript(arguments[0]); ", pageContent);
+		pageContent.sendKeys(Keys.END,Keys.ENTER);
+		pageContent.sendKeys(string, Keys.ENTER);
+		
 	}
 	
 }

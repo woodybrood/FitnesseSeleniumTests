@@ -31,7 +31,27 @@ public class FitNessePage  {
 	
 	@FindBy(xpath = "//header/ul")
 	private WebElement breadCrumbs;
-
+	
+	@FindBy(xpath = "//nav/ul/li/ul/li/a[.='Properties']")
+	private WebElement propertiesLink;
+	
+	@FindBy(xpath = "//nav/ul/li/ul/li/a[.='Delete']")
+	private WebElement deletePageLink;
+	
+	@FindBy(xpath = "//nav/ul/li/ul/li/a[.='Static page']")
+	private WebElement newStaticPageLink;
+	
+	@FindBy(xpath = "//nav/ul/li/ul/li/a[.='Test page']")
+	private WebElement newTestPageLink;
+	
+	@FindBy(xpath = "//nav/ul/li/ul/li/a[.='Suite page']")
+	private WebElement newSuitePageLink;
+	
+	@FindBy(tagName="article")
+	private WebElement articleBody;
+	
+	
+	
 	public FitNessePage(WebDriver driver) {
 		this.driver = driver;
 	}
@@ -64,65 +84,51 @@ public class FitNessePage  {
 		return PageFactory.initElements(driver, FitNessePage.class);
 	}
 	
-	public FitNesseNewPage clickAddTest(){
-		addMenu.findElement(By.linkText("Test page")).click();
+	public FitNesseNewPage clickAddTestPage(){
+		showAddMenu();
+		newTestPageLink.click();
 		return PageFactory.initElements(driver, FitNesseNewPage.class);
 	}
 	
 	public FitNesseNewPage clickAddStaticPage(){
-		addMenu.findElement(By.linkText("Static page")).click();
+		showAddMenu();
+		newStaticPageLink.click();
 		return PageFactory.initElements(driver, FitNesseNewPage.class);
 	}
 	
 	public FitNesseNewPage clickAddSuitePage(){
-		addMenu.findElement(By.linkText("Suite page")).click();
+		showAddMenu();
+		newSuitePageLink.click();
 		return PageFactory.initElements(driver, FitNesseNewPage.class);
 	}
 	
 	public FitNessePropertiesPage clickPropertiesLink(){
-		driver.navigate().to(driver.getCurrentUrl()+ "?properties");
+		showToolsMenu();
+		propertiesLink.click();
 		return PageFactory.initElements(driver, FitNessePropertiesPage.class);
 	}
 
 	
-	private void hoverOverToolsMenu(){
-		Actions builder = new Actions(driver);
-		Action hover = builder.moveToElement(addMenu).moveToElement(toolsMenu).build();
-		hover.perform();
-		
+	private void showToolsMenu(){
+		((JavascriptExecutor) driver).executeScript("$('li#tools').find('ul').css('display', 'block')");
 	}
 	
-	public  void mouseHoverByJavaScript(WebElement targetElement)
-    {
+	private void showAddMenu(){
+		((JavascriptExecutor) driver).executeScript("$('li#add').find('ul').css('display', 'block')");
+	}
 
-        String javaScript = "var evObj = document.createEvent('MouseEvents');" +
-                            "evObj.initMouseEvent(\"mouseover\",true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);" +
-                            "arguments[0].dispatchEvent(evObj);";
-        JavascriptExecutor js = (JavascriptExecutor) driver ;
-        js.executeScript(javaScript, targetElement);
-        try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-      }
+	public String getArticleContents() {
+		return articleBody.getText(); 
+	}
 	
-	private boolean elementMouseOver(WebElement targetElement)
-    {
-      
-        // driver.manage().window().maximize();
-        Actions builder = new Actions(driver);
-        try
-        {
-            builder.moveToElement(targetElement).click().moveToElement(targetElement, 1, 1).build().perform();
-            //Thread.sleep(5000);//2 sec is just to for this blog.
-        }
-        catch (Exception e)
-        {
-          
-            return false;
-        }
-        return true;
-    }
+	public String getPageTitle(){
+		return driver.getTitle();
+	}
+	
+	public FitNesseDeletePage deleteCurrentPage(){
+		showToolsMenu();
+		deletePageLink.click();
+		return PageFactory.initElements(driver, FitNesseDeletePage.class);
+	}
+	
 }

@@ -1,5 +1,7 @@
 package fitnesse.browsers;
 
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
@@ -21,6 +23,7 @@ public class DriverFactory {
 	
 	private static WebDriver buildFirefoxDriver(){
 		WebDriver driver = new FirefoxDriver();
+		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 		return driver;
 	}
 	

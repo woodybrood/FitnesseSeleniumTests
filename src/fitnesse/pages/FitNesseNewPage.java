@@ -20,4 +20,17 @@ public class FitNesseNewPage extends FitNesseEditorPage {
 		pagename.sendKeys(name);
 	}
 
+
+	public boolean isNewStaticPageEditor() {
+		return driver.getCurrentUrl().endsWith("?new&pageType=Static");
+	}
+
+
+	public boolean isNewTestPageEditor() {
+		return driver.getCurrentUrl().endsWith("?new&pageType=Test");
+	}
+
+	public boolean isNewSuitePageEditor() {
+		return driver.getCurrentUrl().endsWith("?new&pageType=Suite");
+	}
 }
