@@ -1,12 +1,11 @@
 package fitnesse.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
-
 
 import fitnesse.pages.FitNesseDeletePage;
 import fitnesse.pages.FitNesseNewPage;
@@ -21,7 +20,7 @@ public class PagePropertiesTests extends AbbstractFitNesseTestCase {
 	
 	@Before
 	public void setUp(){
-		driver.navigate().to("http://localhost:8080/FrontPage");
+		driver.navigate().to(fitnesseServer + "/FrontPage");
 		page = PageFactory.initElements(driver, FitNessePage.class);
 		FitNesseNewPage newPage = page.clickAddTestPage();
 		newPage.setPageName("NewWikiTest");

@@ -7,6 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import test.utility.EnvironmentVariableProvider;
+
 
 import fitnesse.pages.FitNesseDeletePage;
 import fitnesse.pages.FitNesseNewPage;
@@ -16,9 +18,11 @@ public class NewPageTests extends AbbstractFitNesseTestCase {
 	
 	private FitNessePage page = null;
 	private static String SAMPLE_CONTENT_MARKUP = "!1 Test Page";
+	private String fitnesseServer; 
 	
 	@Before
 	public void setUp(){
+		fitnesseServer = EnvironmentVariableProvider.getFitnesseServer();
 		driver.navigate().to("http://localhost:8080/FrontPage");
 		page = PageFactory.initElements(driver, FitNessePage.class);
 	}
@@ -30,7 +34,7 @@ public class NewPageTests extends AbbstractFitNesseTestCase {
 		newPage.setHelpText("This is a sample test");
 		newPage.setPageContent(SAMPLE_CONTENT_MARKUP);
 		page = newPage.savePage();
-		page = page.navigateTo("http://localhost:8080/FrontPage.NewWikiTest");
+		page = page.navigateTo(fitnesseServer + "/FrontPage.NewWikiTest");
 		assertTrue("Page will contain text", page.getArticleContents().contains("Test Page"));
 	}
 	
@@ -39,7 +43,7 @@ public class NewPageTests extends AbbstractFitNesseTestCase {
 		FitNesseNewPage newPage = page.clickAddTestPage();
 		newPage.setPageName("PageToDelete");
 		page = newPage.savePage();
-		page = page.navigateTo("http://localhost:8080/FrontPage.PageToDelete");
+		page = page.navigateTo(fitnesseServer + "/FrontPage.PageToDelete");
 		FitNesseDeletePage deletePage  = page.deleteCurrentPage();
 		deletePage.clickYes();
 		assertEquals("Should be back at FrontPage", "FrontPage", page.getPageTitle());
@@ -53,7 +57,7 @@ public class NewPageTests extends AbbstractFitNesseTestCase {
 		newPage.setHelpText("This is a sample suite");
 		newPage.setPageContent("!1 Suite Page");
 		page = newPage.savePage();
-		page = page.navigateTo("http://localhost:8080/FrontPage.NewSuiteTest");
+		page = page.navigateTo(fitnesseServer + "/FrontPage.NewSuiteTest");
 		assertTrue("Page will contain text", page.getArticleContents().contains("Suite Page"));
 	}
 	
@@ -64,7 +68,7 @@ public class NewPageTests extends AbbstractFitNesseTestCase {
 		newPage.setHelpText("This is a sample static");
 		newPage.setPageContent("!1 Static Page");
 		page = newPage.savePage();
-		page = page.navigateTo("http://localhost:8080/FrontPage.NewStaticTest");
+		page = page.navigateTo(fitnesseServer + "/FrontPage.NewStaticTest");
 		assertTrue("Page will contain text", page.getArticleContents().contains("Static Page"));
 	}
 

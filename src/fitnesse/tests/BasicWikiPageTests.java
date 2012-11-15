@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
+import test.utility.EnvironmentVariableProvider;
+
 import fitnesse.pages.FitNesseEditorPage;
 import fitnesse.pages.FitNesseNewPage;
 import fitnesse.pages.FitNessePage;
@@ -17,7 +19,7 @@ public class BasicWikiPageTests extends AbbstractFitNesseTestCase {
 	
 	@Before
 	public void setUp(){
-		driver.navigate().to("http://localhost:8080/FrontPage");
+		driver.navigate().to(fitnesseServer + "/FrontPage");
 		page = PageFactory.initElements(driver, FitNessePage.class);
 	}
 	
@@ -25,7 +27,7 @@ public class BasicWikiPageTests extends AbbstractFitNesseTestCase {
 	public void editButtonGoesToEditPage() {
 		FitNesseEditorPage editPage = page.edit();
 		page = editPage.clickCancel();
-		assertEquals("Back to FrontPage", "http://localhost:8080/FrontPage", driver.getCurrentUrl());
+		assertEquals("Back to FrontPage", fitnesseServer + "/FrontPage", driver.getCurrentUrl());
 	}
 	
 	@Test
